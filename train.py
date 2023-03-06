@@ -6,7 +6,7 @@ from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 from torch import nn
 import torch
-
+import segmentation_models_pytorch as smp
 device = 'cuda'
 
 transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),])
@@ -19,7 +19,9 @@ train_loader = DataLoader(dataset,batch_size=16,shuffle = True)
 model = fcbformer.FCBFormer()
 
 
-lossF = nn.BCEWithLogitsLoss() 
+bceLoss = nn.BCEWithLogitsLoss() 
+
+diceLoss = smp.losses.DiceLoss('binary')
 
 optimizer = torch.optim.AdamW([ 
     dict(params=model.parameters(), lr=0.001),
@@ -37,7 +39,7 @@ for epoch in range(80):
 
         # forward + backward + optimize
         outputs = model(inputs)
-        loss = lossF(outputs, labels)
+        loss = bceLoss(outputs, labels) + diceLoss(outputs,labels)
         loss.backward()
         optimizer.step()
                
