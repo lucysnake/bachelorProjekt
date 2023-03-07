@@ -1,4 +1,4 @@
-from torchsummary import summary
+from torch import summary
 import enum
 import numpy as np
 import cv2 as cv
