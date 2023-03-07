@@ -18,13 +18,14 @@ train_loader = DataLoader(dataset,batch_size=16,shuffle = True)
 
 model = fcbformer.FCBFormer()
 
+model = nn.DataParallel(model,device_ids=[1,3])
 
 bceLoss = nn.BCEWithLogitsLoss() 
 
 diceLoss = smp.losses.DiceLoss('binary')
 
 optimizer = torch.optim.AdamW([ 
-    dict(params=model.parameters(), lr=0.001),
+    dict(params=model.parameters(), lr=0.0001),
 ])
 
 model.to(device)
