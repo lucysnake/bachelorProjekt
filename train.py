@@ -48,3 +48,6 @@ for epoch in range(80):
             
         print(f"Epoch {epoch} i {i}, Training loss {loss.item():.4f},")
 print('Finished Training')
+
+
+torch.save(model.state_dict(), 'savedModels/model.pth')
