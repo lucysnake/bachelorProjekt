@@ -1,6 +1,7 @@
 from PIL import Image
 from torch.utils.data import Dataset, DataLoader
 import os
+import torch
 
 class UlcerData(Dataset):
     def __init__(self, imagePath, maskPath, transforms, transform2):
@@ -19,4 +20,5 @@ class UlcerData(Dataset):
         label_loc = os.path.join(self.maskPath, self.all_labels[idx])
         image = Image.open(img_loc)
         label = Image.open(label_loc).convert('L')
-        return (self.transforms(image),self.transform2(label))
+        tsr = self.transforms(image)
+        return (tsr,self.transform2(label))
